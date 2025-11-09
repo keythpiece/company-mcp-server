@@ -1,6 +1,6 @@
 # company-mcp-server
 
-自社システム用のModel Context Protocol (MCP)サーバー
+自社システム用のModel Context Protocol (MCP)サーバー（Python実装）
 
 ## 概要
 
@@ -13,15 +13,14 @@
 
 ## 必要要件
 
-- Node.js 18以上
-- npm または yarn
+- Python 3.10以上
+- pip
 - 自社システムのAPIアクセス権限
 
 ## インストール
 
 ```bash
-npm install
-npm run build
+pip install -e .
 ```
 
 ## 設定方法
@@ -34,8 +33,8 @@ npm run build
 {
   "mcpServers": {
     "company-server": {
-      "command": "node",
-      "args": ["/path/to/company-mcp-server/build/index.js"],
+      "command": "python",
+      "args": ["-m", "company_mcp_server"],
       "env": {
         "API_KEY": "your_api_key",
         "API_ENDPOINT": "https://your-company-api.example.com"
@@ -57,16 +56,16 @@ npm run build
 **説明**: データベースから情報を検索します
 
 **パラメータ**:
-- `query` (string): 検索クエリ
-- `limit` (number, optional): 取得件数（デフォルト: 10）
+- `query` (str): 検索クエリ
+- `limit` (int, optional): 取得件数（デフォルト: 10）
 
 ### get_report
 
 **説明**: レポートを生成します
 
 **パラメータ**:
-- `report_type` (string): レポートの種類
-- `date_range` (string): 対象期間
+- `report_type` (str): レポートの種類
+- `date_range` (str): 対象期間
 
 ## 開発
 
@@ -75,20 +74,19 @@ npm run build
 ```bash
 git clone https://github.com/keythpiece/company-mcp-server.git
 cd company-mcp-server
-npm install
-npm run dev
+pip install -e ".[dev]"
 ```
 
 ### テスト
 
 ```bash
-npm test
+pytest
 ```
 
 ### MCP Inspectorでのテスト
 
 ```bash
-npm run inspector
+mcp dev src/company_mcp_server/server.py
 ```
 
 ブラウザで`http://localhost:5173`を開いてテストできます。
@@ -96,7 +94,7 @@ npm run inspector
 ## アーキテクチャ
 
 このMCPサーバーは以下のSDKを使用しています：
-- [@modelcontextprotocol/sdk](https://github.com/modelcontextprotocol/typescript-sdk)
+- [mcp](https://pypi.org/project/mcp/) - Model Context Protocol Python SDK
 
 ## セキュリティ
 
@@ -115,6 +113,10 @@ npm run inspector
 **認証エラーが発生する**
 - APIキーが有効か確認してください
 - APIキーの権限が適切か確認してください
+
+**import errorが発生する**
+- `pip install -e .`でパッケージをインストールしてください
+- Python 3.10以上を使用しているか確認してください
 
 ## ライセンス
 
